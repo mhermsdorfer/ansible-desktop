@@ -19,10 +19,6 @@
   - name: wine
     hosts: all
     tasks:
-      - name: Configure wine repo signing key
-        ansible.builtin.apt_key:
-          data: "{{ lookup('ansible.builtin.file', 'keys/winehq.gpg') }}"
-          state: present
 
      # Gnarly, but check if we've enabled i386 and if not, do so.
       - name: Check if i386 is enabled
@@ -40,9 +36,17 @@
         when: result_i386_check.rc == 1
                 
       - name: Configure wine repo
-        ansible.builtin.apt_repository:
-          repo: "deb [arch=amd64,i386] https://dl.winehq.org/wine-builds/debian {{ansible_distribution_release}} main"
-          filename: winehq
+        ansible.builtin.deb822_repository:
+          name: winehq
+          types: deb
+          uris: https://dl.winehq.org/wine-builds/debian
+          signed_by: https://dl.winehq.org/wine-builds/winehq.key
+          suites: "{{ ansible_distribution_release }}"
+          architectures:
+            - amd64
+            - i386
+          components: 
+            - main
           
       - name: Install wine
         ansible.builtin.apt:

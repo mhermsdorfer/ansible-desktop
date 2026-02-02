@@ -20,8 +20,8 @@
   - name: Authenticator
     hosts: all
     vars:
-      - yubico_path: '/opt/yubico'
-      - yubico_developer_fingerprints:
+      yubico_path: '/opt/yubico'
+      yubico_developer_fingerprints:
           - 20EE325B86A81BCBD3E56798F04367096FBA95E8
 
     tasks:

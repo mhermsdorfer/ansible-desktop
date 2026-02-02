@@ -28,13 +28,22 @@
           - lsb-release
 
     - name: "Backports for {{ansible_lsb.codename}}"
-      ansible.builtin.apt_repository:
-        repo: "deb http://deb.debian.org/debian {{ansible_lsb.codename}}-backports main"
+      ansible.builtin.deb822_repository:
+        name: "{{ ansible_distribution_release }}-backports"
+        types: deb
         state: present
-        filename: backports
+        uris: http://deb.debian.org/debian
+        suites: "{{ ansible_distribution_release }}-backports"
+        components: [main]
 
     - name: "Contrib & NonFree for {{ansible_lsb.codename}}"
-      ansible.builtin.apt_repository:
-        repo: "deb http://deb.debian.org/debian {{ansible_lsb.codename}} contrib non-free non-free-firmware"
+      ansible.builtin.deb822_repository:
+        name: "{{ ansible_distribution_release }}-non-free"
+        types: deb
         state: present
-        filename: nonfree
+        uris: http://deb.debian.org/debian
+        suites: "{{ ansible_distribution_release }}"
+        components: 
+            - contrib
+            - non-free
+            - non-free-firmware

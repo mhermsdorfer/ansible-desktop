@@ -77,6 +77,25 @@
                 - mesa-va-drivers
                 - mesa-vdpau-drivers
         when: lshw_graphics.stdout.find('AMD') != -1
+
+      - name: Configure AMD graphics
+        block:
+          - name: 20-nvidia.conf
+            ansible.builtin.template:
+              src: templates/xorg.conf.d/20-nvidia.conf.j2
+              dest: /etc/X11/xorg.conf.d/20-nvidia.conf
+              owner: root
+              group: root
+              mode: 0444
+          - name: Install Nvidia drivers
+            ansible.builtin.apt:
+              update_cache: yes
+              cache_valid_time: 300
+              state: latest
+              name:
+                - nvidia-kernel-dkms
+                - nvidia-driver
+        when: lshw_graphics.stdout.find('NVIDIA') != -1
               
       - name: Preseed x-display-manager
         debconf:

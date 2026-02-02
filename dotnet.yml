@@ -19,15 +19,18 @@
   - name: dotnet
     hosts: all
     tasks:
-      - name: Configure dotnet repo signing key
-        ansible.builtin.apt_key:
-          data: "{{ lookup('ansible.builtin.file', 'keys/microsoft-dotnet.gpg') }}"
-          state: present
           
       - name: Configure dotnet repo
-        ansible.builtin.apt_repository:
-          repo: "deb [arch=amd64,arm64,armhf] https://packages.microsoft.com/debian/11/prod {{ansible_distribution_release}} main"
-          filename: dotnet
+        ansible.builtin.deb822_repository:
+            name: "dotnet"
+            types: deb
+            state: present
+            uris: https://packages.microsoft.com/debian/{{ ansible_distribution_major_version }}/prod
+            signed_by: https://packages.microsoft.com/keys/microsoft.asc 
+            suites: "{{ ansible_distribution_release }}"
+            components: 
+                - main
+
           
       - name: Install dotnet
         ansible.builtin.apt:

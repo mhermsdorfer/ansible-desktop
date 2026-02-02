@@ -36,6 +36,14 @@
           mode: 0444
 
       - name: Configure Sid repo
-        ansible.builtin.apt_repository:
-          repo: "deb http://deb.debian.org/debian unstable main"
-          filename: sid
+        ansible.builtin.deb822_repository:
+            name: "unstable"
+            types: deb
+            state: present
+            uris: http://deb.debian.org/debian
+            suites: "unstable"
+            components: 
+                - main
+
+
+

@@ -19,15 +19,20 @@
   - name: virtualbox
     hosts: all
     tasks:
-      - name: Configure virtualbox repo signing key
-        ansible.builtin.apt_key:
-          data: "{{lookup('ansible.builtin.file', 'keys/oracle_vbox_2016.asc')}}"
-          state: present
           
       - name: Configure virtualbox repo
-        ansible.builtin.apt_repository:
+        ansible.builtin.deb822_repository:
           repo: "deb [arch=amd64] http://download.virtualbox.org/virtualbox/debian {{ansible_distribution_release}} contrib"
           filename: virtualbox
+            name: "virtualbox"
+            types: deb
+            state: present
+            uris: http://download.virtualbox.org/virtualbox/debian
+            signed_by: https://www.virtualbox.org/download/oracle_vbox_2016.asc
+            suites: "{{ ansible_distribution_release }}"
+            components:
+                - contrib
+
 
       - name: Check kernel revision
         shell: "uname -r"

@@ -45,7 +45,8 @@
             - mpv
             - net-tools # netstat
             - nvi # vi, non-vim
-            - openjdk-17-jdk
+            - vim-motif
+            - openjdk-25-jdk
             - openssh-client
             - openssh-server
             - pavucontrol
@@ -54,7 +55,6 @@
             - rsync
             - ruby-dev
             - ruby
-            - ruby-pry-byebug
             - silversearcher-ag
             - unison
 

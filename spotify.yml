@@ -21,15 +21,18 @@
   - name: Spotify
     hosts: all
     tasks:
-      - name: Configure Spotify repo signing key
-        ansible.builtin.apt_key:
-          data: "{{ lookup('ansible.builtin.file', 'keys/spotify.gpg') }}"
-          state: present
           
       - name: Configure Spotify repo
-        ansible.builtin.apt_repository:
-          repo: "deb [arch=amd64] http://repository.spotify.com stable non-free"
-          filename: spotify
+        ansible.builtin.deb822_repository:
+            name: "spotify"
+            types: deb
+            state: present
+            uris: http://repository.spotify.com
+            signed_by: https://download.spotify.com/debian/pubkey_5384CE82BA52C83A.asc
+            suites: stable
+            components: 
+                - non-free
+
           
       - name: Install Spotify
         ansible.builtin.apt:
