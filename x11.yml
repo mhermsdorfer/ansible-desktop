@@ -78,7 +78,7 @@
                 - mesa-vdpau-drivers
         when: lshw_graphics.stdout.find('AMD') != -1
 
-      - name: Configure AMD graphics
+      - name: Configure Nvidia graphics
         block:
           - name: 20-nvidia.conf
             ansible.builtin.template:
@@ -96,6 +96,7 @@
                 - nvidia-kernel-dkms
                 - nvidia-driver
                 - linux-headers-amd64
+                - nvidia-driver-libs:i386
         when: lshw_graphics.stdout.find('NVIDIA') != -1
               
       - name: Preseed x-display-manager
