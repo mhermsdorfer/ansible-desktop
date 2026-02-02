@@ -95,6 +95,7 @@
               name:
                 - nvidia-kernel-dkms
                 - nvidia-driver
+                - linux-headers-amd64
         when: lshw_graphics.stdout.find('NVIDIA') != -1
               
       - name: Preseed x-display-manager
